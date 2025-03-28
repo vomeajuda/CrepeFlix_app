@@ -16,7 +16,7 @@
   </select>
   <button id="addToCartButton">Adicionar ao carrinho</button>
 
-  <h2>Cart</h2>
+  <h2>Carrinho</h2>
   <ul id="cart"></ul>
 
   <input type="text" id="nameInput" placeholder="Enter your name" /><br/>
@@ -49,6 +49,19 @@
       cart.push(selectedFlavor);
       const listItem = document.createElement('li');
       listItem.textContent = selectedFlavor;
+
+      // Create a "Remove" button
+      const removeButton = document.createElement('button');
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', () => {
+        const index = cart.indexOf(selectedFlavor);
+        if (index > -1) {
+          cart.splice(index, 1); // Remove item from cart array
+          cartElement.removeChild(listItem); // Remove item from UI
+        }
+      });
+
+      listItem.appendChild(removeButton); // Add the button to the list item
       cartElement.appendChild(listItem);
     });
 

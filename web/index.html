@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crepe Order</title>
+  <title>Totem Crepe</title>
 </head>
 <body>
 
-  <h1>Choose Your Crepe</h1>
+  <h1>Faça seu pedido</h1>
   <select id="flavorSelect">
     <option value="Chocolate">Chocolate</option>
-    <option value="Strawberry">Strawberry</option>
+    <option value="Strawberry">Morango</option>
     <option value="Banana">Banana</option>
     <option value="Nutella">Nutella</option>
   </select>
-  <button id="addToCartButton">Add to Cart</button>
+  <button id="addToCartButton">Adicionar ao carrinho</button>
 
   <h2>Cart</h2>
   <ul id="cart"></ul>
 
-  <input type="text" id="nameInput" placeholder="Enter your name" />
-  <button id="sendOrderButton">Send Order</button>
+  <input type="text" id="nameInput" placeholder="Enter your name" /><br/>
+  <button id="sendOrderButton">Enviar</button>
 
   <script>
     const socket = new WebSocket('ws://localhost:8080');

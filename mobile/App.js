@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, Button, Text, View, StyleSheet } from 'react-native';
+import { TextInput, Button, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function App() {
   const [message, setMessage] = useState('');
@@ -64,7 +64,17 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.receivedMessage}>A preparar:</Text>
       {receivedMessages.map((msg, index) => (
-        <Text key={index} style={styles.receivedMessage}>{msg}</Text> // Render all messages
+        <View key={index} style={styles.messageContainer}>
+          <Text style={styles.receivedMessage}>{msg}</Text> 
+          <TouchableOpacity 
+            style={styles.finishedButton} 
+            onPress={() => {
+              setReceivedMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
+            }}
+          >
+            <Text style={styles.buttonText}>Concluído</Text>
+          </TouchableOpacity>
+        </View>
       ))}
     </View>
   );
@@ -87,5 +97,22 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 40,
     color: 'black',
+  },
+  messageContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  finishedButton: {
+    width: '100%',
+    backgroundColor: 'red',
+    marginTop: 10,
+    borderRadius: 5,
+    padding: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

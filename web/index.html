@@ -3,25 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebSocket Client</title>
+  <title>Crepe Order</title>
 </head>
 <body>
-  <input type="text" id="messageInput" placeholder="Type a message" />
-  <button id="sendButton">Send</button>
+
+  <h1>Choose Your Crepe</h1>
+  <select id="flavorSelect">
+    <option value="Chocolate">Chocolate</option>
+    <option value="Strawberry">Strawberry</option>
+    <option value="Banana">Banana</option>
+    <option value="Nutella">Nutella</option>
+  </select>
+  <button id="addToCartButton">Add to Cart</button>
+
+  <h2>Cart</h2>
+  <ul id="cart"></ul>
+
+  <input type="text" id="nameInput" placeholder="Enter your name" />
+  <button id="sendOrderButton">Send Order</button>
 
   <script>
     const socket = new WebSocket('ws://localhost:8080');
   
     socket.onopen = () => {
       console.log('WebSocket connection established');
-    };
-  
-    socket.onmessage = (event) => {
-      const receivedMessages = document.getElementById('receivedMessages');
-      const message = document.createElement('p');
-      const messageText = String(event.data); // Ensure the data is converted to a string
-      message.textContent = `Received: ${messageText}`;
-      receivedMessages.appendChild(message);
     };
   
     socket.onerror = (error) => {
@@ -31,13 +36,38 @@
     socket.onclose = () => {
       console.log('WebSocket connection closed');
     };
-  
-    const sendButton = document.getElementById('sendButton');
-    sendButton.addEventListener('click', () => {
-      const messageInput = document.getElementById('messageInput');
-      const message = messageInput.value;
-      socket.send(message);
-      messageInput.value = '';  // Clear the input after sending
+
+    const cart = [];
+    const cartElement = document.getElementById('cart');
+    const flavorSelect = document.getElementById('flavorSelect');
+    const addToCartButton = document.getElementById('addToCartButton');
+    const sendOrderButton = document.getElementById('sendOrderButton');
+    const nameInput = document.getElementById('nameInput');
+
+    addToCartButton.addEventListener('click', () => {
+      const selectedFlavor = flavorSelect.value;
+      cart.push(selectedFlavor);
+      const listItem = document.createElement('li');
+      listItem.textContent = selectedFlavor;
+      cartElement.appendChild(listItem);
+    });
+
+    sendOrderButton.addEventListener('click', () => {
+      const name = nameInput.value;
+      if (!name) {
+        alert('Insira seu nome.');
+        return;
+      } else if (cart.length === 0) {
+        alert('Adicione um crepe ao carrinho.');
+        return;
+      }
+
+      const order = { Nome: name, Produtos: cart };
+      socket.send(JSON.stringify(order));
+      alert('Order sent!');
+      cart.length = 0; // Clear the cart
+      cartElement.innerHTML = ''; // Clear the cart UI
+      nameInput.value = ''; // Clear the name input
     });
   </script>
 </body>

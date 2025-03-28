@@ -27,7 +27,19 @@ export default function App() {
       }
     
       console.log('Received message: ', messageData);
-      setReceivedMessages((prevMessages) => [...prevMessages, messageData]); // Append new message
+    
+      try {
+        // Ensure the message is valid JSON before parsing
+        if (typeof messageData === 'string' && messageData.trim().startsWith('{') && messageData.trim().endsWith('}')) {
+          const parsedData = JSON.parse(messageData);
+          const formattedMessage = `Nome: ${parsedData.Nome} \nProdutos: ${parsedData.Produtos}`;
+          setReceivedMessages((prevMessages) => [...prevMessages, formattedMessage]); // Append formatted message
+        } else {
+          console.warn('Received non-JSON message: ', messageData);
+        }
+      } catch (error) {
+        console.error('Error parsing JSON: ', error);
+      }
     };
 
     socketConnection.onerror = (error) => {

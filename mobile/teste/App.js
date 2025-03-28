@@ -7,7 +7,7 @@ export default function App() {
   const [socket, setSocket] = useState(null);
   
   // WebSocket URL to your server
-  const socketUrl = 'ws://192.168.0.195:8080';
+  const socketUrl = 'ws://192.168.0.163:8080';
 
   useEffect(() => {
     // Create a WebSocket connection on mount
@@ -48,22 +48,8 @@ export default function App() {
     };
   }, []);
 
-  const sendMessage = () => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(message);
-      setMessage(''); // Clear input after sending
-    }
-  };
-
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={message}
-        onChangeText={setMessage}
-        placeholder="Type a message"
-      />
-      <Button title="Send" onPress={sendMessage} />
       <Text style={styles.receivedMessage}>Received: {receivedMessage}</Text>
     </View>
   );

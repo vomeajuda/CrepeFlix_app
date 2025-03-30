@@ -7,7 +7,7 @@ export default function App() {
   const [socket, setSocket] = useState(null);
   
   // WebSocket URL to your server
-  const socketUrl = 'ws://192.168.0.163:8080';
+  const socketUrl = 'ws://192.168.0.194:8080';
 
   useEffect(() => {
     // Create a WebSocket connection on mount

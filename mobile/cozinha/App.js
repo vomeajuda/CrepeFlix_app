@@ -7,7 +7,7 @@ export default function App() {
   const [socket, setSocket] = useState(null);
   
   // WebSocket URL to your server
-  const socketUrl = 'ws://192.168.0.194:8080';
+  const socketUrl = 'ws://192.168.0.194:8090'; // Updated port to 8090
 
   useEffect(() => {
     // Create a WebSocket connection on mount
@@ -32,8 +32,14 @@ export default function App() {
         // Ensure the message is valid JSON before parsing
         if (typeof messageData === 'string' && messageData.trim().startsWith('{') && messageData.trim().endsWith('}')) {
           const parsedData = JSON.parse(messageData);
-          const formattedMessage = `Nome: ${parsedData.Nome} \nProdutos: ${parsedData.Produtos}`;
-          setReceivedMessages((prevMessages) => [...prevMessages, formattedMessage]); // Append formatted message
+
+          // Only process messages forwarded to "cozinha"
+          if (parsedData.forwardedToCozinha) {
+            const formattedMessage = `Nome: ${parsedData.Nome} \nProdutos: ${parsedData.Produtos}`;
+            setReceivedMessages((prevMessages) => [...prevMessages, formattedMessage]); // Append formatted message
+          } else {
+            console.warn('Message not intended for cozinha: ', parsedData);
+          }
         } else {
           console.warn('Received non-JSON message: ', messageData);
         }
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
   },
   receivedMessage: {
     marginTop: 20,
-    fontSize: 40,
+    fontSize: 30,
     color: 'black',
   },
   messageContainer: {

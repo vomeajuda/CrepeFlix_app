@@ -1,0 +1,159 @@
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
+
+export default function App() {
+  const [receivedOrders, setReceivedOrders] = useState([]);
+  const [socket, setSocket] = useState(null);
+  const [serverIp, setServerIp] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(true);
+
+  const connectToServer = () => {
+    const socketUrl = `ws://${serverIp}:8090`;
+    const socketConnection = new WebSocket(socketUrl);
+
+    socketConnection.onopen = () => {
+      console.log('WebSocket connection established');
+      setIsModalVisible(false); // Close the modal only on successful connection
+    };
+
+    socketConnection.onerror = (error) => {
+      console.log('WebSocket error: ', error);
+      alert('Falha ao conectar, cheque o ip.');
+      setIsModalVisible(true); // Reopen the modal on connection error
+    };
+
+    socketConnection.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    setSocket(socketConnection);
+  };
+
+  useEffect(() => {
+    // Cleanup WebSocket connection on unmount
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
+  }, [socket]);
+
+  const handleSendToKitchen = (index) => {
+    const order = receivedOrders[index];
+    if (socket) {
+      const orderForCozinha = { ...order, forwardedToCozinha: true };
+      socket.send(JSON.stringify(orderForCozinha));
+      
+      setReceivedOrders((prevOrders) => prevOrders.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleCancelOrder = (index) => {
+    setReceivedOrders((prevOrders) => prevOrders.filter((_, i) => i !== index));
+  };
+
+  return (
+    <View style={styles.container}>
+      <Modal visible={isModalVisible} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>IP do Servidor</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Insira o IP do servidor"
+            value={serverIp}
+            onChangeText={setServerIp}
+          />
+          <Button
+            title="Connect"
+            onPress={() => {
+              connectToServer();
+            }}
+          />
+        </View>
+      </Modal>
+      <Text style={styles.header}>Pedidos Recebidos:</Text>
+      {receivedOrders.map((order, index) => (
+        <View key={index} style={styles.orderContainer}>
+          <Text style={styles.orderText}>Nome: {order.Nome}</Text>
+          <Text style={styles.orderText}>Produtos: {order.Produtos.join(', ')}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.sendButton}
+              onPress={() => handleSendToKitchen(index)}
+            >
+              <Text style={styles.buttonText}>Mandar para cozinha</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => handleCancelOrder(index)}
+            >
+              <Text style={styles.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 16,
+    color: 'white',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    backgroundColor: 'white',
+    width: '80%',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    marginTop: 40, // Added margin to move it down
+  },
+  orderContainer: {
+    marginBottom: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+  },
+  orderText: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  sendButton: {
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 5,
+  },
+  cancelButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});

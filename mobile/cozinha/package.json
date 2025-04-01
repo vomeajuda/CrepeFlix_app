@@ -1,5 +1,5 @@
 {
-  "name": "teste",
+  "name": "cozinha",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@stomp/stompjs": "^7.1.0",
+    "cozinha": "file:",
     "expo": "~52.0.41",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, Button, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { TextInput, Button, Text, View, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 
 export default function App() {
   const [message, setMessage] = useState('');
-  const [receivedMessages, setReceivedMessages] = useState([]); // Changed to an array
+  const [receivedMessages, setReceivedMessages] = useState([]);
   const [socket, setSocket] = useState(null);
-  
-  // WebSocket URL to your server
-  const socketUrl = 'ws://192.168.0.194:8090'; // Updated port to 8090
+  const [serverIp, setServerIp] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(true);
 
-  useEffect(() => {
-    // Create a WebSocket connection on mount
+  const connectToServer = () => {
+    const socketUrl = `ws://${serverIp}:8090`;
     const socketConnection = new WebSocket(socketUrl);
 
     socketConnection.onopen = () => {
@@ -19,24 +18,21 @@ export default function App() {
 
     socketConnection.onmessage = (event) => {
       let messageData = event.data;
-    
-      // Check if the data is an ArrayBuffer and decode it
+
       if (messageData instanceof ArrayBuffer) {
         const decoder = new TextDecoder('utf-8');
         messageData = decoder.decode(messageData);
       }
-    
+
       console.log('Received message: ', messageData);
-    
+
       try {
-        // Ensure the message is valid JSON before parsing
         if (typeof messageData === 'string' && messageData.trim().startsWith('{') && messageData.trim().endsWith('}')) {
           const parsedData = JSON.parse(messageData);
 
-          // Only process messages forwarded to "cozinha"
           if (parsedData.forwardedToCozinha) {
             const formattedMessage = `Nome: ${parsedData.Nome} \nProdutos: ${parsedData.Produtos}`;
-            setReceivedMessages((prevMessages) => [...prevMessages, formattedMessage]); // Append formatted message
+            setReceivedMessages((prevMessages) => [...prevMessages, formattedMessage]);
           } else {
             console.warn('Message not intended for cozinha: ', parsedData);
           }
@@ -56,24 +52,43 @@ export default function App() {
       console.log('WebSocket connection closed');
     };
 
-    setSocket(socketConnection);  // Store the socket connection for later use
+    setSocket(socketConnection);
+  };
 
-    // Cleanup the WebSocket connection when the component unmounts
+  useEffect(() => {
     return () => {
-      if (socketConnection) {
-        socketConnection.close();
+      if (socket) {
+        socket.close();
       }
     };
-  }, []);
+  }, [socket]);
 
   return (
     <View style={styles.container}>
+      <Modal visible={isModalVisible} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Enter Server IP</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Server IP"
+            value={serverIp}
+            onChangeText={setServerIp}
+          />
+          <Button
+            title="Connect"
+            onPress={() => {
+              setIsModalVisible(false);
+              connectToServer();
+            }}
+          />
+        </View>
+      </Modal>
       <Text style={styles.receivedMessage}>A preparar:</Text>
       {receivedMessages.map((msg, index) => (
         <View key={index} style={styles.messageContainer}>
-          <Text style={styles.receivedMessage}>{msg}</Text> 
-          <TouchableOpacity 
-            style={styles.finishedButton} 
+          <Text style={styles.receivedMessage}>{msg}</Text>
+          <TouchableOpacity
+            style={styles.finishedButton}
             onPress={() => {
               setReceivedMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
             }}
@@ -92,12 +107,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 16,
+    color: 'white',
+  },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+    backgroundColor: 'white',
+    width: '80%',
   },
   receivedMessage: {
     marginTop: 20,

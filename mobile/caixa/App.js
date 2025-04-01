@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
 
 export default function App() {
   const [receivedOrders, setReceivedOrders] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [serverIp, setServerIp] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(true);
 
-  const socketUrl = 'ws://192.168.0.194:8090'; // Updated port to 8090
-
-  useEffect(() => {
+  const connectToServer = () => {
+    const socketUrl = `ws://${serverIp}:8090`;
     const socketConnection = new WebSocket(socketUrl);
 
     socketConnection.onopen = () => {
@@ -51,13 +52,16 @@ export default function App() {
     };
 
     setSocket(socketConnection);
+  };
 
+  useEffect(() => {
+    // Cleanup WebSocket connection on unmount
     return () => {
-      if (socketConnection) {
-        socketConnection.close();
+      if (socket) {
+        socket.close();
       }
     };
-  }, []);
+  }, [socket]);
 
   const handleSendToKitchen = (index) => {
     const order = receivedOrders[index];
@@ -75,6 +79,24 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Modal visible={isModalVisible} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Enter Server IP</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Server IP"
+            value={serverIp}
+            onChangeText={setServerIp}
+          />
+          <Button
+            title="Connect"
+            onPress={() => {
+              setIsModalVisible(false);
+              connectToServer();
+            }}
+          />
+        </View>
+      </Modal>
       <Text style={styles.header}>Pedidos Recebidos:</Text>
       {receivedOrders.map((order, index) => (
         <View key={index} style={styles.orderContainer}>
@@ -104,6 +126,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 16,
+    color: 'white',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    backgroundColor: 'white',
+    width: '80%',
   },
   header: {
     fontSize: 24,

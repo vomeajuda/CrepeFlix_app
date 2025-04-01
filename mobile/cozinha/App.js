@@ -14,6 +14,7 @@ export default function App() {
 
     socketConnection.onopen = () => {
       console.log('WebSocket connection established');
+      setIsModalVisible(false); // Close the modal only on successful connection
     };
 
     socketConnection.onmessage = (event) => {
@@ -46,6 +47,8 @@ export default function App() {
 
     socketConnection.onerror = (error) => {
       console.log('WebSocket error: ', error);
+      alert('Falha ao conectar, cheque o ip.');
+      setIsModalVisible(true); // Reopen the modal on connection error
     };
 
     socketConnection.onclose = () => {
@@ -67,17 +70,16 @@ export default function App() {
     <View style={styles.container}>
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Enter Server IP</Text>
+          <Text style={styles.modalTitle}>IP do Servidor</Text>
           <TextInput
             style={styles.input}
-            placeholder="Server IP"
+            placeholder="Insira o IP do servidor"
             value={serverIp}
             onChangeText={setServerIp}
           />
           <Button
             title="Connect"
             onPress={() => {
-              setIsModalVisible(false);
               connectToServer();
             }}
           />

@@ -13,38 +13,13 @@ export default function App() {
 
     socketConnection.onopen = () => {
       console.log('WebSocket connection established');
-    };
-
-    socketConnection.onmessage = (event) => {
-      let messageData = event.data;
-
-      // Check if the data is an ArrayBuffer and decode it
-      if (messageData instanceof ArrayBuffer) {
-        const decoder = new TextDecoder('utf-8');
-        messageData = decoder.decode(messageData);
-      }
-
-      console.log('Received message: ', messageData);
-
-      try {
-        // Ensure the message is valid JSON before parsing
-        if (typeof messageData === 'string' && messageData.trim().startsWith('{') && messageData.trim().endsWith('}')) {
-          const parsedData = JSON.parse(messageData);
-
-          // Ignore messages forwarded to cozinha
-          if (!parsedData.forwardedToCozinha) {
-            setReceivedOrders((prevOrders) => [...prevOrders, parsedData]);
-          }
-        } else {
-          console.warn('Received non-JSON message: ', messageData);
-        }
-      } catch (error) {
-        console.error('Error parsing JSON: ', error);
-      }
+      setIsModalVisible(false); // Close the modal only on successful connection
     };
 
     socketConnection.onerror = (error) => {
       console.log('WebSocket error: ', error);
+      alert('Falha ao conectar, cheque o ip.');
+      setIsModalVisible(true); // Reopen the modal on connection error
     };
 
     socketConnection.onclose = () => {
@@ -81,17 +56,16 @@ export default function App() {
     <View style={styles.container}>
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Enter Server IP</Text>
+          <Text style={styles.modalTitle}>IP do Servidor</Text>
           <TextInput
             style={styles.input}
-            placeholder="Server IP"
+            placeholder="Insira o IP do servidor"
             value={serverIp}
             onChangeText={setServerIp}
           />
           <Button
             title="Connect"
             onPress={() => {
-              setIsModalVisible(false);
               connectToServer();
             }}
           />
@@ -151,6 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    marginTop: 40, // Added margin to move it down
   },
   orderContainer: {
     marginBottom: 16,

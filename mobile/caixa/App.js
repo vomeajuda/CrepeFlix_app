@@ -16,6 +16,34 @@ export default function App() {
       setIsModalVisible(false); // Close the modal only on successful connection
     };
 
+    socketConnection.onmessage = (event) => {
+      let messageData = event.data;
+
+      // Check if the data is an ArrayBuffer and decode it
+      if (messageData instanceof ArrayBuffer) {
+        const decoder = new TextDecoder('utf-8');
+        messageData = decoder.decode(messageData);
+      }
+
+      console.log('Received message: ', messageData);
+
+      try {
+        // Ensure the message is valid JSON before parsing
+        if (typeof messageData === 'string' && messageData.trim().startsWith('{') && messageData.trim().endsWith('}')) {
+          const parsedData = JSON.parse(messageData);
+
+          // Ignore messages forwarded to cozinha
+          if (!parsedData.forwardedToCozinha) {
+            setReceivedOrders((prevOrders) => [...prevOrders, parsedData]);
+          }
+        } else {
+          console.warn('Received non-JSON message: ', messageData);
+        }
+      } catch (error) {
+        console.error('Error parsing JSON: ', error);
+      }
+    };
+
     socketConnection.onerror = (error) => {
       console.log('WebSocket error: ', error);
       alert('Falha ao conectar, cheque o ip.');

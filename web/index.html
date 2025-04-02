@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="card text-center flavor-card" data-flavor="Strawberry">
+          <div class="card text-center flavor-card" data-flavor="Morango">
             <div class="card-body">
               <h5 class="card-title">Morango</h5>
             </div>
@@ -59,7 +59,7 @@
   </div>
 
   <script>
-    const socket = new WebSocket('ws://192.168.0.194:8090'); // Updated port to 8090
+    const socket = new WebSocket('ws://localhost:8090'); // Updated port to 8090
 
     socket.onopen = () => {
       console.log('WebSocket connection established');

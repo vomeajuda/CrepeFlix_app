@@ -1,0 +1,52 @@
+body {
+  background-color: #141414;
+  color: #ffffff;
+}
+
+header {
+  background-color: #141414;
+  border-bottom: 2px solid #e50914;
+  display: flex;
+  justify-content: center; /* Center the title */
+  align-items: center;
+}
+
+h1, h2 {
+  color: #e50914;
+}
+
+.card {
+  background-color: #333333;
+  border: none;
+}
+
+.card-title {
+  color: #ffffff;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.list-group-item {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #444444;
+}
+
+.btn-danger {
+  background-color: #e50914;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #f40612;
+}
+
+footer {
+  background-color: #141414;
+  position: fixed; /* Ensure footer stays at the bottom */
+  bottom: 0;
+  width: 100%;
+}

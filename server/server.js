@@ -6,11 +6,13 @@ const os = require('os');
 const app = express();
 const server = app.listen(8090, () => {
   const interfaces = os.networkInterfaces();
-  const localIp = Object.values(interfaces)
-    .flat()
-    .find((iface) => iface.family === 'IPv4' && !iface.internal)?.address;
+  const wifiInterface = Object.entries(interfaces)
+    .flatMap(([name, ifaceList]) => ifaceList.map((iface) => ({ name, ...iface })))
+    .find((iface) => iface.family === 'IPv4' && !iface.internal && iface.name.toLowerCase().includes('wi-fi'));
+  const localIp = wifiInterface?.address;
+
   if (localIp) {
-    console.log(`IP Server: http://${localIp}:8090`);
+    console.log(`IP Server: ${localIp}`);
   }
   import('open').then((open) => open.default('http://localhost:8090')); // Open browser after server is ready
 });

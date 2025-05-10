@@ -1,10 +1,17 @@
 const WebSocket = require('ws');
 const express = require('express');
 const path = require('path');
+const os = require('os');
 
 const app = express();
 const server = app.listen(8090, () => {
-  console.log('Server running on http://localhost:8090');
+  const interfaces = os.networkInterfaces();
+  const localIp = Object.values(interfaces)
+    .flat()
+    .find((iface) => iface.family === 'IPv4' && !iface.internal)?.address;
+  if (localIp) {
+    console.log(`IP Server: http://${localIp}:8090`);
+  }
   import('open').then((open) => open.default('http://localhost:8090')); // Open browser after server is ready
 });
 

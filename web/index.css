@@ -7,8 +7,16 @@ header {
   background-color: #141414;
   border-bottom: 2px solid #e50914;
   display: flex;
-  justify-content: center; /* Center the title */
+  justify-content: center;
   align-items: center;
+  position: relative;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+header img {
+  position: absolute;
+  left: 1rem;
+  max-width: 5rem;
 }
 
 h1, h2 {
@@ -49,4 +57,53 @@ footer {
   position: fixed; /* Ensure footer stays at the bottom */
   bottom: 0;
   width: 100%;
+}
+
+.scrolling-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.scrolling-wrapper .card {
+  min-width: 200px;
+  flex: 0 0 auto;
+}
+
+/* Optional: Hide scrollbar for a cleaner look */
+.scrolling-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.scrolling-wrapper {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.nav-tabs .nav-link {
+  color: #ffffff;
+  background-color: #333333;
+  border: 1px solid #444444;
+}
+
+.nav-tabs .nav-link.active {
+  color: #ffffff;
+  background-color: #e50914;
+  border-color: #e50914;
+}
+
+.tab-content {
+  padding: 1rem;
+  background-color: #141414;
+  border: 1px solid #444444;
+  border-top: none;
+}
+
+#cart {
+  max-width: 100%; /* Ensure the cart doesn't exceed its container */
+}
+
+.card-text {
+  color: #ffffff; /* Make the price text white */
 }

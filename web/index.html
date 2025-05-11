@@ -15,53 +15,105 @@
 <body class="container-fluid text-white">
 
   <header class="p-3">
+    <img src="./assets/crepeflix.png" alt="CrepeFlix Logo" style="max-width: 5rem;">
     <h1 class="text-danger">CrepeFlix</h1>
     <!-- Removed login button -->
   </header>
 
   <main class="mt-4">
     <h2 class="text-center mb-4">Escolha seu sabor</h2>
-    <div class="row">
-      <!-- Flavors Section -->
-      <div class="col-md-8">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="card text-center flavor-card" data-flavor="Chocolate">
-              <div class="card-body">
-                <h5 class="card-title">Chocolate</h5>
-              </div>
+
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="flavorTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="salgados-tab" data-bs-toggle="tab" data-bs-target="#salgados" type="button" role="tab" aria-controls="salgados" aria-selected="true">Salgados</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="doces-tab" data-bs-toggle="tab" data-bs-target="#doces" type="button" role="tab" aria-controls="doces" aria-selected="false">Doces</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="combos-tab" data-bs-toggle="tab" data-bs-target="#combos" type="button" role="tab" aria-controls="combos" aria-selected="false">Combos</button>
+      </li>
+    </ul>
+
+    <!-- Tabs Content -->
+    <div class="tab-content mt-3" id="flavorTabsContent">
+      <!-- Salgados Tab -->
+      <div class="tab-pane fade show active" id="salgados" role="tabpanel" aria-labelledby="salgados-tab">
+        <div class="scrolling-wrapper">
+          <div class="card text-center flavor-card" data-flavor="Jerry">
+            <div class="card-body">
+              <h5 class="card-title">Jerry</h5>
+              <p class="card-text">R$ 8,00</p>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="card text-center flavor-card" data-flavor="Morango">
-              <div class="card-body">
-                <h5 class="card-title">Morango</h5>
-              </div>
+          <div class="card text-center flavor-card" data-flavor="Tom E Jerry">
+            <div class="card-body">
+              <h5 class="card-title">Tom E Jerry</h5>
+              <p class="card-text">R$ 8,00</p>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="card text-center flavor-card" data-flavor="Banana">
-              <div class="card-body">
-                <h5 class="card-title">Banana</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card text-center flavor-card" data-flavor="Nutella">
-              <div class="card-body">
-                <h5 class="card-title">Nutella</h5>
-              </div>
+          <div class="card text-center flavor-card" data-flavor="João Frango">
+            <div class="card-body">
+              <h5 class="card-title">João Frango</h5>
+              <p class="card-text">R$ 10,00</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Cart and Name Section -->
-      <div class="col-md-4">
-        <h2 class="text-danger">Carrinho</h2>
-        <ul id="cart" class="list-group mb-3"></ul>
-        <input type="text" id="nameInput" class="form-control mb-3" placeholder="Digite seu nome" />
-        <button id="sendOrderButton" class="btn btn-danger w-100">Enviar</button>
+      <!-- Doces Tab -->
+      <div class="tab-pane fade" id="doces" role="tabpanel" aria-labelledby="doces-tab">
+        <div class="scrolling-wrapper">
+          <div class="card text-center flavor-card" data-flavor="Bridgadeiton">
+            <div class="card-body">
+              <h5 class="card-title">Bridgadeiton</h5>
+              <p class="card-text">R$ 8,00</p>
+            </div>
+          </div>
+          <div class="card text-center flavor-card" data-flavor="The Nutella Academy">
+            <div class="card-body">
+              <h5 class="card-title">The Nutella Academy</h5>
+              <p class="card-text">R$ 10,00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Combos Tab -->
+      <div class="tab-pane fade" id="combos" role="tabpanel" aria-labelledby="combos-tab">
+        <div class="scrolling-wrapper">
+          <div class="card text-center flavor-card" data-flavor="Jerry + Tom e Jerry + Bridgadeiton">
+            <div class="card-body">
+              <h5 class="card-title">Jerry + Tom e Jerry + Bridgadeiton</h5>
+              <p class="card-text">R$ 20,00</p>
+            </div>
+          </div>
+          <div class="card text-center flavor-card" data-flavor="Jerry + João Frango + Bridgadeiton">
+            <div class="card-body">
+              <h5 class="card-title">Jerry + João Frango + Bridgadeiton</h5>
+              <p class="card-text">R$ 22,00</p>
+            </div>
+          </div>
+          <div class="card text-center flavor-card" data-flavor="Especial">
+            <div class="card-body">
+              <h5 class="card-title">Especial</h5>
+              <p class="card-text">R$ 25,00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart and Name Section -->
+    <div class="mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="text-danger">Carrinho</h2>
+          <ul id="cart" class="list-group mb-3"></ul>
+          <input type="text" id="nameInput" class="form-control mb-3" placeholder="Digite seu nome" />
+          <button id="sendOrderButton" class="btn btn-danger w-100">Enviar</button>
+        </div>
       </div>
     </div>
   </main>
@@ -69,6 +121,9 @@
   <footer class="text-center mt-4 p-3 bg-dark text-white">
     <p>&copy; 2025 CrepeFlix</p>
   </footer>
+
+  <!-- Add Bootstrap JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     const socket = new WebSocket('ws://localhost:8090'); // Updated port to 8090

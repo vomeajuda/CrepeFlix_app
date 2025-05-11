@@ -103,3 +103,17 @@ h1, h2 {
   font-size: 1.25rem; /* Increase font size */
   font-weight: bold; /* Make it bold for emphasis */
 }
+
+.modal-content {
+  background-color: #333333; /* Dark background for the modal */
+  color: #ffffff; /* White text for contrast */
+  border: 1px solid #444444; /* Border to match the theme */
+}
+
+.modal-header, .modal-footer {
+  border-color: #444444; /* Match modal border color */
+}
+
+.btn-close {
+  filter: invert(1); /* Make the close button visible on dark background */
+}

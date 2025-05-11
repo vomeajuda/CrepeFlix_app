@@ -138,7 +138,23 @@ sendOrderButton.addEventListener('click', () => {
     return;
   }
 
-  const order = { Nome: name, Produtos: cart };
+  const total = cart.reduce((sum, item) => {
+    const basePrice = prices[item.flavor] || 0;
+    const additionalPrice = item.ingredients.reduce((ingredientSum, ingredient) => {
+      return ingredientSum + (ingredient === "M&Ms" ? 3.00 : 2.00);
+    }, 0);
+    return sum + basePrice + additionalPrice;
+  }, 0);
+
+  const order = { 
+    Nome: name, 
+    Produtos: cart.map(item => ({
+      flavor: item.flavor,
+      ingredients: item.ingredients.join(', ')
+    })),
+    Total: total.toFixed(2) // Include total price
+  };
+
   socket.send(JSON.stringify(order));
   alert('Order sent!');
   cart.length = 0; // Clear the cart

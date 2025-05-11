@@ -32,7 +32,9 @@ export default function App() {
           const parsedData = JSON.parse(messageData);
 
           if (parsedData.forwardedToCozinha) {
-            const formattedMessage = `Nome: ${parsedData.Nome} \nProdutos: ${parsedData.Produtos}`;
+            const formattedMessage = `Nome: ${parsedData.Nome} \nProdutos: ${parsedData.Produtos.map(
+              (produto) => `${produto.flavor} (${produto.ingredients || "Sem adicionais"})`
+            ).join(", ")}${parsedData.Total ? ` \nTotal: R$ ${parsedData.Total}` : ""}`;
             setReceivedMessages((prevMessages) => [...prevMessages, formattedMessage]);
           } else {
             console.warn('Message not intended for cozinha: ', parsedData);
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
   },
   receivedMessage: {
     marginTop: 20,
-    fontSize: 30,
+    fontSize: 20,
     color: 'black',
   },
   messageContainer: {

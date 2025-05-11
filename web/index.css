@@ -7,16 +7,18 @@ header {
   background-color: #141414;
   border-bottom: 2px solid #e50914;
   display: flex;
-  justify-content: center;
   align-items: center;
-  position: relative;
-  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-header img {
-  position: absolute;
-  left: 1rem;
-  max-width: 5rem;
+header img:first-child {
+  max-width: 3rem;
+  max-height: 5.5rem;
+}
+
+header img.mx-auto {
+  max-width: 10rem;
+  margin: 0 auto;
+  transform: translateX(-3rem);
 }
 
 h1, h2 {
@@ -52,13 +54,6 @@ h1, h2 {
   background-color: #f40612;
 }
 
-footer {
-  background-color: #141414;
-  position: fixed; /* Ensure footer stays at the bottom */
-  bottom: 0;
-  width: 100%;
-}
-
 .scrolling-wrapper {
   display: flex;
   overflow-x: auto;
@@ -69,16 +64,6 @@ footer {
 .scrolling-wrapper .card {
   min-width: 200px;
   flex: 0 0 auto;
-}
-
-/* Optional: Hide scrollbar for a cleaner look */
-.scrolling-wrapper::-webkit-scrollbar {
-  display: none;
-}
-
-.scrolling-wrapper {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
 .nav-tabs .nav-link {
@@ -101,15 +86,20 @@ footer {
 }
 
 #cart {
-  max-width: 100%; /* Ensure the cart doesn't exceed its container */
+  max-width: 100%;
 }
 
 .card-text {
-  color: #ffffff; /* Make the price text white */
+  color: #ffffff;
 }
 
 .card-description {
-  color: #bbbbbb; /* Light gray for better readability */
-  font-size: 0.9rem; /* Slightly smaller than the title and price */
+  color: #bbbbbb;
+  font-size: 0.9rem;
   margin-top: 0.5rem;
+}
+
+#totalPrice {
+  font-size: 1.25rem; /* Increase font size */
+  font-weight: bold; /* Make it bold for emphasis */
 }

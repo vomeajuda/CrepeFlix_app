@@ -69,8 +69,9 @@ export default function App() {
   const handleSendToKitchen = (index) => {
     const order = receivedOrders[index];
     if (socket) {
-      const orderForCozinha = { ...order, forwardedToCozinha: true };
-      socket.send(JSON.stringify(orderForCozinha));
+      const { Total, ...orderForCozinha } = order; // Exclude the Total field
+      const forwardedOrder = { ...orderForCozinha, forwardedToCozinha: true };
+      socket.send(JSON.stringify(forwardedOrder));
       
       setReceivedOrders((prevOrders) => prevOrders.filter((_, i) => i !== index));
     }
@@ -103,7 +104,15 @@ export default function App() {
       {receivedOrders.map((order, index) => (
         <View key={index} style={styles.orderContainer}>
           <Text style={styles.orderText}>Nome: {order.Nome}</Text>
-          <Text style={styles.orderText}>Produtos: {order.Produtos.join(', ')}</Text>
+          <Text style={styles.orderText}>
+            Produtos:{" "}
+            {order.Produtos.map(
+              (produto) => `${produto.flavor} (${produto.ingredients || "Sem adicionais"})`
+            ).join(", ")}
+          </Text>
+          {order.Total && ( // Only display Total if it exists
+            <Text style={styles.orderText}>Total: R$ {order.Total}</Text>
+          )}
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.sendButton}

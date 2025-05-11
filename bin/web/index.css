@@ -1,0 +1,119 @@
+body {
+  background-color: #141414;
+  color: #ffffff;
+}
+
+header {
+  background-color: #141414;
+  border-bottom: 2px solid #e50914;
+  display: flex;
+  align-items: center;
+}
+
+header img:first-child {
+  max-width: 3rem;
+  max-height: 5.5rem;
+}
+
+header img.mx-auto {
+  max-width: 10rem;
+  margin: 0 auto;
+  transform: translateX(-3rem);
+}
+
+h1, h2 {
+  color: #e50914;
+}
+
+.card {
+  background-color: #333333;
+  border: none;
+}
+
+.card-title {
+  color: #ffffff;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.list-group-item {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #444444;
+}
+
+.btn-danger {
+  background-color: #e50914;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #f40612;
+}
+
+.scrolling-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.scrolling-wrapper .card {
+  min-width: 200px;
+  flex: 0 0 auto;
+}
+
+.nav-tabs .nav-link {
+  color: #ffffff;
+  background-color: #333333;
+  border: 1px solid #444444;
+}
+
+.nav-tabs .nav-link.active {
+  color: #ffffff;
+  background-color: #e50914;
+  border-color: #e50914;
+}
+
+.tab-content {
+  padding: 1rem;
+  background-color: #141414;
+  border: 1px solid #444444;
+  border-top: none;
+}
+
+#cart {
+  max-width: 100%;
+}
+
+.card-text {
+  color: #ffffff;
+}
+
+.card-description {
+  color: #bbbbbb;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+#totalPrice {
+  font-size: 1.25rem; /* Increase font size */
+  font-weight: bold; /* Make it bold for emphasis */
+}
+
+.modal-content {
+  background-color: #333333; /* Dark background for the modal */
+  color: #ffffff; /* White text for contrast */
+  border: 1px solid #444444; /* Border to match the theme */
+}
+
+.modal-header, .modal-footer {
+  border-color: #444444; /* Match modal border color */
+}
+
+.btn-close {
+  filter: invert(1); /* Make the close button visible on dark background */
+}

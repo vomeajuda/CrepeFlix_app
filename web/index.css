@@ -107,3 +107,9 @@ footer {
 .card-text {
   color: #ffffff; /* Make the price text white */
 }
+
+.card-description {
+  color: #bbbbbb; /* Light gray for better readability */
+  font-size: 0.9rem; /* Slightly smaller than the title and price */
+  margin-top: 0.5rem;
+}

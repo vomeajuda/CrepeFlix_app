@@ -42,7 +42,7 @@ const updateTotalPrice = () => {
   const total = cart.reduce((sum, item) => {
     const basePrice = prices[item.flavor] || 0;
     const additionalPrice = item.ingredients.reduce((ingredientSum, ingredient) => {
-      return ingredientSum + (ingredient === "M&Ms" ? 3.00 : 2.00); // R$ 3,00 for M&Ms, R$ 2,00 for others
+      return ingredientSum + (ingredient === "M&Ms" ? 3.00 : 2.00);
     }, 0);
     return sum + basePrice + additionalPrice;
   }, 0);
@@ -71,7 +71,6 @@ document.querySelectorAll('.flavor-card').forEach(card => {
     const description = descriptions[selectedFlavor] || "Descrição não disponível.";
     document.getElementById('itemDescription').textContent = description;
 
-    // Populate ingredient options
     const ingredientContainer = document.getElementById('ingredientOptions');
     ingredientContainer.innerHTML = '';
     ingredientOptions[category].forEach(option => {
@@ -84,7 +83,6 @@ document.querySelectorAll('.flavor-card').forEach(card => {
       ingredientContainer.appendChild(div);
     });
 
-    // Show the modal
     const customizeModal = new bootstrap.Modal(document.getElementById('customizeModal'));
     customizeModal.show();
   });
@@ -123,9 +121,27 @@ document.getElementById('addToCartButton').addEventListener('click', () => {
   cartElement.appendChild(listItem);
   updateTotalPrice();
 
-  // Hide the modal
   const customizeModal = bootstrap.Modal.getInstance(document.getElementById('customizeModal'));
   customizeModal.hide();
+});
+
+document.getElementById('startButton').addEventListener('click', () => {
+  const beginningScreen = document.getElementById('beginningScreen');
+  const mainContent = document.getElementById('mainContent');
+
+  beginningScreen.style.opacity = '0';
+  setTimeout(() => {
+    beginningScreen.remove();
+    mainContent.style.display = 'block';
+  }, 300);
+});
+
+document.getElementById('sendOrderButton').addEventListener('click', () => {
+  const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+  confirmationModal.show();
+  setTimeout(() => {
+    location.reload();
+  }, 2000);
 });
 
 sendOrderButton.addEventListener('click', () => {
@@ -152,13 +168,12 @@ sendOrderButton.addEventListener('click', () => {
       flavor: item.flavor,
       ingredients: item.ingredients.join(', ')
     })),
-    Total: total.toFixed(2) // Include total price
+    Total: total.toFixed(2)
   };
 
   socket.send(JSON.stringify(order));
-  alert('Order sent!');
-  cart.length = 0; // Clear the cart
-  cartElement.innerHTML = ''; // Clear the cart UI
-  nameInput.value = ''; // Clear the name input
-  updateTotalPrice(); // Reset total price
+  cart.length = 0;
+  cartElement.innerHTML = '';
+  nameInput.value = '';
+  updateTotalPrice();
 });

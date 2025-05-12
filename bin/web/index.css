@@ -100,20 +100,39 @@ h1, h2 {
 }
 
 #totalPrice {
-  font-size: 1.25rem; /* Increase font size */
-  font-weight: bold; /* Make it bold for emphasis */
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .modal-content {
-  background-color: #333333; /* Dark background for the modal */
-  color: #ffffff; /* White text for contrast */
-  border: 1px solid #444444; /* Border to match the theme */
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #444444;
 }
 
 .modal-header, .modal-footer {
-  border-color: #444444; /* Match modal border color */
+  border-color: #444444;
 }
 
 .btn-close {
-  filter: invert(1); /* Make the close button visible on dark background */
+  filter: invert(1);
+}
+
+#beginningScreen {
+  background-color: #141414;
+  color: #ffffff;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+#beginningScreen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#mainContent {
+  display: none;
+  width: 100%;
+  height: auto;
 }

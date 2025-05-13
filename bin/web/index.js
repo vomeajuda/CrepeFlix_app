@@ -42,7 +42,6 @@ const updateTotalPrice = () => {
   const total = cart.reduce((sum, item) => {
     const basePrice = prices[item.flavor] || 0;
 
-    // Exclude additional price for flavors inside "Especial"
     const additionalPrice = item.flavor === "Especial" ? 0 : item.ingredients.reduce((ingredientSum, ingredient) => {
       return ingredientSum + (ingredient === "M&Ms" ? 3.00 : 2.00); // R$ 3,00 for M&Ms, R$ 2,00 for others
     }, 0);
@@ -90,13 +89,11 @@ document.querySelectorAll('.flavor-card').forEach(card => {
         ingredientContainer.appendChild(div);
       });
 
-      // Add a note to select exactly three flavors
       const note = document.createElement('p');
       note.className = 'text-danger mt-2';
       note.textContent = 'Selecione exatamente três sabores.';
       ingredientContainer.appendChild(note);
     } else {
-      // Populate ingredient options for other items
       ingredientOptions[category].forEach(option => {
         const div = document.createElement('div');
         div.className = 'form-check';
@@ -120,7 +117,6 @@ document.getElementById('addToCartButton').addEventListener('click', () => {
     .map(input => input.value);
 
   if (selectedFlavor === "Especial" && selectedIngredients.length !== 3) {
-    // Show validation modal if the user selects less or more than three options
     const validationModal = new bootstrap.Modal(document.getElementById('validationModal'));
     validationModal.show();
     return;
@@ -171,9 +167,11 @@ document.getElementById('startButton').addEventListener('click', () => {
 document.getElementById('sendOrderButton').addEventListener('click', () => {
   const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
   confirmationModal.show();
-  setTimeout(() => {
+
+  const closeButton = document.querySelector('#confirmationModal .btn-danger');
+  closeButton.addEventListener('click', () => {
     location.reload();
-  }, 2000);
+  }, { once: true });
 });
 
 sendOrderButton.addEventListener('click', () => {

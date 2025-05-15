@@ -14,7 +14,7 @@ export default function App() {
 
     socketConnection.onopen = () => {
       console.log('WebSocket connection established');
-      setIsModalVisible(false); // Close the modal only on successful connection
+      setIsModalVisible(false);
     };
 
     socketConnection.onmessage = (event) => {
@@ -50,11 +50,12 @@ export default function App() {
     socketConnection.onerror = (error) => {
       console.log('WebSocket error: ', error);
       alert('Falha ao conectar, cheque o ip.');
-      setIsModalVisible(true); // Reopen the modal on connection error
+      setIsModalVisible(true);
     };
 
     socketConnection.onclose = () => {
       console.log('WebSocket connection closed');
+      setIsModalVisible(true);
     };
 
     setSocket(socketConnection);

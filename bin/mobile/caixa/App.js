@@ -52,6 +52,7 @@ export default function App() {
 
     socketConnection.onclose = () => {
       console.log('WebSocket connection closed');
+      setIsModalVisible(true); // Show the modal to enter IP again
     };
 
     setSocket(socketConnection);
@@ -110,7 +111,7 @@ export default function App() {
               (produto) => `${produto.flavor} (${produto.ingredients || "Sem adicionais"})`
             ).join(", ")}
           </Text>
-          {order.Total && ( // Only display Total if it exists
+          {order.Total && (
             <Text style={styles.orderText}>Total: R$ {order.Total}</Text>
           )}
           <View style={styles.buttonContainer}>

@@ -52,6 +52,7 @@ export default function App() {
 
     socketConnection.onclose = () => {
       console.log('WebSocket connection closed');
+      setIsModalVisible(true); // Show the modal to enter IP again
     };
 
     setSocket(socketConnection);

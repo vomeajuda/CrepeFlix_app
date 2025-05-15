@@ -14,7 +14,7 @@ export default function App() {
 
     socketConnection.onopen = () => {
       console.log('WebSocket connection established');
-      setIsModalVisible(false); // Close the modal only on successful connection
+      setIsModalVisible(false);
     };
 
     socketConnection.onmessage = (event) => {

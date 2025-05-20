@@ -1,3 +1,4 @@
+cd ..
 cd bin
 cd mobile
 cd cozinha

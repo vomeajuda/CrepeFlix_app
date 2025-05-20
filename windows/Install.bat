@@ -1,11 +1,13 @@
 @echo off
 cd /d "%~dp0"
+cd ..
 cd bin
 cd server
 echo Running npm install in %cd%
 call npm install
 call npm fund
 cd /d "%~dp0"
+cd ..
 cd bin
 cd mobile
 cd caixa
@@ -13,6 +15,7 @@ echo Running npm install in %cd%
 call npm install
 call npm fund
 cd /d "%~dp0"
+cd ..
 cd bin
 cd mobile
 cd cozinha
